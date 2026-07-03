@@ -40,8 +40,10 @@ function activate(context) {
     const config = vscode.workspace.getConfiguration('copyAiRef');
     const result = buildReference(editor, config);
 
-    vscode.env.clipboard.writeText(result);
-    vscode.window.setStatusBarMessage(`Copied: ${result}`, 3000);
+    vscode.env.clipboard.writeText(result).then(
+      () => vscode.window.setStatusBarMessage(`Copied: ${result}`, 3000),
+      (err) => vscode.window.showErrorMessage(`Copy AI Ref: failed to copy — ${err}`)
+    );
   });
 
   context.subscriptions.push(disposable);

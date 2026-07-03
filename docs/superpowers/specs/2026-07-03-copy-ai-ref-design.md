@@ -78,9 +78,11 @@ reference, in any project, without per-project setup.
      default, `~` for `tilde`)
 6. Prepend `@` when `copyAiRef.prefixAt` is `true` (default `false`).
 7. Final string: `${prefixAt ? '@' : ''}${normalizedPath}${suffix}`.
-8. Write the string to the clipboard via `vscode.env.clipboard.writeText`.
-9. Show a transient info message (or status bar message) echoing the copied
-   string, for confirmation.
+8. Write the string to the clipboard via `vscode.env.clipboard.writeText`,
+   which returns a Thenable.
+9. On success, show a transient status bar message echoing the copied
+   string, for confirmation. On failure, show an error message instead of
+   silently reporting success.
 
 ## Settings (`contributes.configuration`)
 

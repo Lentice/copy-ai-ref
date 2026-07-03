@@ -57,11 +57,17 @@ reference, in any project, without per-project setup.
    - `backslash`: replace `/` with `\`
    - `system`: leave as returned by `asRelativePath` (native OS separator)
 4. Read `editor.selection` (primary selection only):
+   - No highlighted text (collapsed selection, i.e. just the cursor)
+     naturally resolves to a single line: `start === end === selection.active.line + 1`.
+   - Compute `effectiveEndLine = selection.end.line`; if
+     `selection.end.character === 0 && selection.end.line > selection.start.line`,
+     decrement it by 1. This corrects the common case where selecting a
+     whole line (e.g. triple-click, or Home + Shift+Down) makes VS Code
+     report the selection end as column 0 of the *next* line — without this
+     adjustment a single selected line would wrongly render as a 2-line
+     range.
    - `start = selection.start.line + 1`
-   - `end = selection.end.line + 1`
-   - No special-casing for a selection whose end lands on column 0 of the
-     next line (e.g. triple-click line selection) — raw line numbers are
-     used as-is. Revisit only if this proves annoying in practice.
+   - `end = effectiveEndLine + 1`
 5. Build the line-range suffix:
    - `start === end` → `${lineSeparator}${start}`
    - otherwise → `${lineSeparator}${start}${rangeConnector}${end}`
@@ -92,8 +98,13 @@ reference, in any project, without per-project setup.
 
 ## Testing
 
-- Manual smoke test: open a workspace, select a single line, multiple lines,
-  and no selection (cursor only) at various nested paths; verify clipboard
-  content for each of the 8 setting combinations (2×2×2, excluding
-  `pathSeparator` variants which are visually easy to eyeball on Windows).
+- Manual smoke test: open a workspace and verify clipboard content for:
+  - No selection (cursor only) → single line, matches cursor's line.
+  - Partial selection within one line → single line.
+  - Whole line selected via triple-click / Home+Shift+Down (selection end
+    at column 0 of next line) → single line, not a 2-line range.
+  - Multi-line selection → correct start-end range.
+  - Repeat the above across the 8 `prefixAt`/`lineSeparator`/`rangeConnector`
+    combinations (2×2×2, excluding `pathSeparator` variants which are
+    visually easy to eyeball on Windows).
 - No workspace open (single file mode): verify it falls back to filename.

@@ -1,0 +1,52 @@
+{
+  "name": "copy-ai-ref",
+  "displayName": "Copy AI Ref",
+  "description": "Copy the current selection as an AI-assistant-friendly @path#line reference",
+  "version": "0.0.1",
+  "publisher": "local",
+  "private": true,
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:copyAiRef.copy"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copyAiRef.copy",
+        "title": "Copy AI Ref"
+      }
+    ],
+    "configuration": {
+      "title": "Copy AI Ref",
+      "properties": {
+        "copyAiRef.prefixAt": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prepend '@' to the copied reference."
+        },
+        "copyAiRef.pathSeparator": {
+          "type": "string",
+          "enum": ["system", "slash", "backslash"],
+          "default": "slash",
+          "description": "Path separator style used in the copied path."
+        },
+        "copyAiRef.lineSeparator": {
+          "type": "string",
+          "enum": ["#", ":"],
+          "default": "#",
+          "description": "Separator between the path and the line number(s)."
+        },
+        "copyAiRef.rangeConnector": {
+          "type": "string",
+          "enum": ["dash", "tilde"],
+          "default": "dash",
+          "description": "Connector between start and end line for multi-line selections ('dash' -> '-', 'tilde' -> '~')."
+        }
+      }
+    }
+  }
+}

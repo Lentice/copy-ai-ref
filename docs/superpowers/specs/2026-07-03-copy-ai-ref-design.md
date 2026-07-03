@@ -50,8 +50,10 @@ reference, in any project, without per-project setup.
 1. Read `vscode.window.activeTextEditor`. If there is none, show a warning
    message (`No active editor`) and stop.
 2. Compute the path via `vscode.workspace.asRelativePath(document.uri)`.
-   - If no workspace folder is open, this already falls back to the bare
-     file name (built-in VS Code behavior) — no extra handling needed.
+   - When no workspace folder is open, or the file isn't inside any open
+     workspace folder, `asRelativePath` returns the input unchanged (the
+     file's absolute path) — this is the built-in VS Code behavior, and is
+     the desired fallback here, so no extra handling is needed.
 3. Normalize path separators per `copyAiRef.pathSeparator`:
    - `slash` (default): replace `\` with `/`
    - `backslash`: replace `/` with `\`
@@ -108,4 +110,5 @@ reference, in any project, without per-project setup.
   - Repeat the above across the 8 `prefixAt`/`lineSeparator`/`rangeConnector`
     combinations (2×2×2, excluding `pathSeparator` variants which are
     visually easy to eyeball on Windows).
-- No workspace open (single file mode): verify it falls back to filename.
+- No workspace open (single file mode), or file outside any workspace
+  folder: verify it falls back to the file's absolute path.

@@ -2,7 +2,7 @@
   "name": "copy-ai-ref",
   "displayName": "Copy AI Ref",
   "description": "Copy the current selection as an AI-assistant-friendly @path#line reference",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "local",
   "private": true,
   "engines": {
@@ -25,7 +25,7 @@
       "properties": {
         "copyAiRef.prefixAt": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Prepend '@' to the copied reference."
         },
         "copyAiRef.pathSeparator": {

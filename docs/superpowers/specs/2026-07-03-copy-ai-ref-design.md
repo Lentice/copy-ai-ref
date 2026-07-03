@@ -74,7 +74,7 @@ reference, in any project, without per-project setup.
    - `lineSeparator` from `copyAiRef.lineSeparator` (`#` default, or `:`)
    - `rangeConnector` from `copyAiRef.rangeConnector` (`-` for `dash`
      default, `~` for `tilde`)
-6. Prepend `@` when `copyAiRef.prefixAt` is `true` (default `true`).
+6. Prepend `@` when `copyAiRef.prefixAt` is `true` (default `false`).
 7. Final string: `${prefixAt ? '@' : ''}${normalizedPath}${suffix}`.
 8. Write the string to the clipboard via `vscode.env.clipboard.writeText`.
 9. Show a transient info message (or status bar message) echoing the copied
@@ -84,7 +84,7 @@ reference, in any project, without per-project setup.
 
 | Key | Type | Values | Default |
 |---|---|---|---|
-| `copyAiRef.prefixAt` | boolean | — | `true` |
+| `copyAiRef.prefixAt` | boolean | — | `false` |
 | `copyAiRef.pathSeparator` | enum | `system`, `slash`, `backslash` | `slash` |
 | `copyAiRef.lineSeparator` | enum | `#`, `:` | `#` |
 | `copyAiRef.rangeConnector` | enum | `dash`, `tilde` | `dash` |
@@ -93,8 +93,9 @@ reference, in any project, without per-project setup.
 
 ## Examples (defaults)
 
-- Single line: `@odoo/addons/crm_extension/models/crm_prospect_category.py#13`
-- Multi-line: `@odoo/addons/crm_extension/views/crm_lead_views.xml#152-153`
+- Single line: `odoo/addons/crm_extension/models/crm_prospect_category.py#13`
+- Multi-line: `odoo/addons/crm_extension/views/crm_lead_views.xml#152-153`
+- With `prefixAt` enabled: `@odoo/addons/crm_extension/models/crm_prospect_category.py#13`
 
 ## Testing
 

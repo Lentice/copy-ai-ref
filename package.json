@@ -12,9 +12,6 @@
     "vscode": "^1.85.0"
   },
   "categories": ["Other"],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [

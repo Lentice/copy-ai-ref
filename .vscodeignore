@@ -2,3 +2,4 @@
 docs/**
 .vscodeignore
 *.vsix
+test.js

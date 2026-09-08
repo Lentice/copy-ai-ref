@@ -5,6 +5,7 @@
 - Add **Copy AI Ref (Absolute Path)** for a one-off absolute reference.
 - Add Explorer context-menu commands for whole-file references, including multi-select.
 - Add `copyAiRef.pathMode` to choose relative or absolute paths by default.
+- Add `copyAiRef.showAbsoluteMenuItem` to hide the absolute-path entry from the right-click menus.
 - Preview the resulting reference next to every choice in the Settings dropdowns.
 - `copyAiRef.prefixAt` is now a `none` / `@` dropdown instead of a checkbox; the old `true` value still works.
 - Warn instead of copying for non-`file:` resources and for selections containing folders.

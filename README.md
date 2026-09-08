@@ -66,6 +66,8 @@ Defaults: `prefixAt: none`, `pathSeparator: slash`, `lineSeparator: #`, `rangeCo
 
 **Path mode:** `copyAiRef.pathMode` chooses `relative` (default, `src/app.js`) or `absolute` (`C:/project/src/app.js`) for both editor and Explorer references.
 
+**Menu items:** `copyAiRef.showAbsoluteMenuItem` (default on) shows **Copy AI Ref (Absolute Path)** in the editor and Explorer right-click menus. Turn it off for shorter menus; the command stays in the Command Palette and keeps any keyboard shortcut you bind to it.
+
 ## Path and selection details
 
 - A selection ending at the start of the next line excludes that next line.

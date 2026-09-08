@@ -108,6 +108,11 @@ async function checkCommands() {
   const manifest = require('./package.json');
   assert.deepStrictEqual([...commands.keys()].sort(), manifest.contributes.commands.map((item) => item.command).sort());
   assert.strictEqual(manifest.contributes.keybindings[0].mac, 'cmd+alt+c');
+  // The absolute-path menu items are gated on the setting; the palette entries are not.
+  for (const menu of ['editor/context', 'explorer/context']) {
+    const item = manifest.contributes.menus[menu].find((entry) => entry.command.endsWith('Absolute'));
+    assert.ok(item.when.includes('config.copyAiRef.showAbsoluteMenuItem'), menu);
+  }
   // Every enum setting previews its output, one line per choice, in the settings dropdown.
   for (const [key, value] of Object.entries(manifest.contributes.configuration.properties)) {
     assert.ok(value.markdownDescription, `${key} has no markdownDescription`);

@@ -41,11 +41,11 @@
     "menus": {
       "editor/context": [
         { "command": "copyAiRef.copy", "when": "resourceScheme == file", "group": "9_cutcopypaste@20" },
-        { "command": "copyAiRef.copyAbsolute", "when": "resourceScheme == file", "group": "9_cutcopypaste@22" }
+        { "command": "copyAiRef.copyAbsolute", "when": "resourceScheme == file && config.copyAiRef.showAbsoluteMenuItem", "group": "9_cutcopypaste@22" }
       ],
       "explorer/context": [
         { "command": "copyAiRef.copyFiles", "when": "resourceScheme == file && !explorerResourceIsFolder", "group": "6_copypath@20" },
-        { "command": "copyAiRef.copyFilesAbsolute", "when": "resourceScheme == file && !explorerResourceIsFolder", "group": "6_copypath@22" }
+        { "command": "copyAiRef.copyFilesAbsolute", "when": "resourceScheme == file && !explorerResourceIsFolder && config.copyAiRef.showAbsoluteMenuItem", "group": "6_copypath@22" }
       ],
       "commandPalette": [
         { "command": "copyAiRef.copyFiles", "when": "false" },
@@ -64,6 +64,11 @@
             "Example: `src/app.js#13-19`",
             "Example: `C:/project/src/app.js#13-19`"
           ]
+        },
+        "copyAiRef.showAbsoluteMenuItem": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show **Copy AI Ref (Absolute Path)** in the editor and Explorer context menus. The command stays available in the Command Palette either way."
         },
         "copyAiRef.prefixAt": {
           "type": "string",

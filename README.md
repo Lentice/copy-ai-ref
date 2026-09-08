@@ -1,57 +1,86 @@
 # Copy AI Ref
 
-Copy the current file and selected lines as a reference such as
-`src/app.js#13` or `src/app.js#13-19` for AI coding assistants.
+**Copy file paths and line ranges in one keystroke. Give your AI coding assistant the exact place to look.**
 
-## Install and use
+Select code → press **Ctrl+Alt+C** (macOS: **Cmd+Option+C**) → paste `src/app.js#13-19` into your prompt.
 
-Install **Copy AI Ref** (`lentice.copy-ai-ref-lentice`) from VS Code's
-Extensions view, or use **Extensions: Install from VSIX** for a local package.
+![Workflow illustration: select lines 13–19, copy with the keyboard shortcut, and paste src/app.js#13-19 into an AI prompt.](images/workflow.png)
 
-Select text or place the cursor on a line, then run **Copy AI Ref** from the
-Command Palette. The reference is copied to the clipboard and shown briefly
-in the status bar.
+Unlike copying a relative path alone, Copy AI Ref includes your cursor line or selected line range. It copies **references, not code content**. No API key, account, runtime dependencies, or per-project setup. The extension makes no network requests and collects no telemetry.
 
-- Without a selection, copies the cursor's line; with multiple cursors, copies
-  one reference per selection (sorted by position, duplicates removed), one per
-  line.
-- A selection ending at the start of the next line excludes that next line.
-- Paths are relative to the containing workspace folder (the folder's display
-  name is never included), with an absolute-path fallback for files outside the
-  workspace or when no workspace is open.
-- Only real files on disk are supported; untitled, diff and other virtual
-  documents show a warning instead of a bogus reference.
-- Unrecognized setting values fall back to the defaults below.
+## Quick start
+
+1. Install [Copy AI Ref](https://marketplace.visualstudio.com/items?itemName=lentice.copy-ai-ref-lentice) from VS Code's Extensions view.
+2. Open a local file and select code, or place the cursor on a line.
+3. Press **Ctrl+Alt+C** / **Cmd+Option+C**, or right-click → **Copy AI Ref**.
+4. Paste into your AI prompt. A brief status-bar message confirms the copy.
+
+Your assistant must be able to access the referenced project. Pasting a reference does not upload or attach the file. Relative paths assume the assistant is working from the corresponding workspace folder; use absolute paths when its working directory differs.
+
+## What gets copied
+
+| Action | Output with default settings |
+|---|---|
+| Cursor on line 13 | `src/app.js#13` |
+| Select lines 13–19 | `src/app.js#13-19` |
+| Multiple cursors or selections | One reference per selection, sorted by position, duplicates removed |
+| Select files in Explorer | One file path per line, without line numbers |
+| Copy an absolute reference | `C:/project/src/app.js#13-19` on Windows, `/home/you/project/src/app.js#13-19` on Linux |
+
+For example, two selections produce:
+
+```text
+src/app.js#13-19
+src/app.js#42
+```
+
+For a one-off absolute path in your configured format, run **Copy AI Ref (Absolute Path)**.
+
+## Copy whole-file references from Explorer
+
+Select one or more files in the Explorer, then right-click:
+
+- **Copy AI Ref** — copy file paths using your settings.
+- **Copy AI Ref (Absolute Path)** — copy absolute file paths.
+
+Files do not need to be open. References follow the Explorer's supplied selection order, one per line, with no line numbers. The `prefixAt` setting also applies to file references. Selections containing folders show a warning and leave the clipboard untouched.
 
 ## Keyboard shortcut
 
-No shortcut is assigned by default. Add this entry in **Preferences: Open
-Keyboard Shortcuts (JSON)** to use it across projects:
+| Platform | Copy AI Ref (editor focused) |
+|---|---|
+| Windows / Linux | `Ctrl+Alt+C` |
+| macOS | `Cmd+Option+C` |
 
-```json
-{
-  "key": "ctrl+alt+c",
-  "command": "copyAiRef.copy",
-  "when": "editorTextFocus"
-}
-```
+To change a shortcut or resolve a conflict, open **Preferences: Open Keyboard Shortcuts** and search for **Copy AI Ref**. The absolute-path command can be bound independently. Explorer commands are available through its right-click menu.
 
 ## Settings
 
-| Setting | Values | Default |
-|---|---|---|
-| `copyAiRef.prefixAt` | `true` adds `@`; `false` omits it | `false` |
-| `copyAiRef.pathSeparator` | `system` / `slash` / `backslash` | `slash` |
-| `copyAiRef.lineSeparator` | `#` / `:` | `#` |
-| `copyAiRef.rangeConnector` | `dash` (`-`) / `tilde` (`~`) | `dash` |
+Search for **Copy AI Ref** in Settings.
 
-## Maintenance check
+One example, **`@src/app.js#13-19`**, shows which part each setting controls:
 
-After changing `extension.js` or settings in `package.json`, verify clipboard
-output for a cursor, a single-line selection, a selection ending at the next
-line's start, multiple lines, and multiple cursors. Check an unsaved
-(untitled) editor warns instead of copying. Check the format settings above and the
-absolute-path fallback. Copy failures should show an error, not a success
-message.
+![@src/app.js#13-19: prefixAt — none or @; pathSeparator — / or \; lineSeparator — # or :; rangeConnector — - or ~.](images/settings.png)
 
-`node test.js` covers the reference-building logic without VS Code.
+Defaults: `prefixAt: none`, `pathSeparator: slash`, `lineSeparator: #`, `rangeConnector: dash`. The example above enables `prefixAt: @`.
+
+**Path mode:** `copyAiRef.pathMode` chooses `relative` (default, `src/app.js`) or `absolute` (`C:/project/src/app.js`) for both editor and Explorer references.
+
+## Path and selection details
+
+- A selection ending at the start of the next line excludes that next line.
+- Relative paths use the containing workspace folder, without its display name. Files outside the workspace, or files opened without a workspace, fall back to absolute paths.
+- In multi-root workspaces, relative paths can be ambiguous when different roots contain the same path. Choose absolute paths to distinguish them.
+- Only `file:` resources are supported. Untitled documents, virtual documents, and remote URI schemes are not supported. Save untitled files locally before copying.
+- References describe the editor's current line positions. Save changes before asking an assistant that reads from disk to inspect them.
+- Unrecognized setting values fall back to their defaults. Copy failures show an error instead of a success message.
+
+## Local installation and maintenance
+
+For a local package, use **Extensions: Install from VSIX**.
+
+Run `node test.js` to check reference formatting and command behavior with a mocked VS Code API. Before release, verify editor and Explorer right-click menus, multi-file selection, absolute paths, and platform shortcuts in VS Code.
+
+## License
+
+[MIT](LICENSE)

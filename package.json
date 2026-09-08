@@ -1,8 +1,8 @@
 {
   "name": "copy-ai-ref-lentice",
   "displayName": "Copy AI Ref",
-  "description": "Copy the current selection as an AI-assistant-friendly @path#line reference",
-  "version": "0.0.5",
+  "description": "Copy file paths and line ranges for AI coding assistants. Multi-cursor, format previews, and Explorer multi-select.",
+  "version": "0.1.0",
   "publisher": "lentice",
   "repository": {
     "type": "git",
@@ -11,40 +11,100 @@
   "engines": {
     "vscode": "^1.85.0"
   },
+  "license": "MIT",
   "categories": ["Other"],
+  "keywords": ["ai", "reference", "copy path", "line numbers", "clipboard"],
   "main": "./extension.js",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#101B2D",
+    "theme": "dark"
+  },
   "contributes": {
     "commands": [
       {
         "command": "copyAiRef.copy",
         "title": "Copy AI Ref"
+      },
+      { "command": "copyAiRef.copyAbsolute", "title": "Copy AI Ref (Absolute Path)" },
+      { "command": "copyAiRef.copyFiles", "title": "Copy AI Ref" },
+      { "command": "copyAiRef.copyFilesAbsolute", "title": "Copy AI Ref (Absolute Path)" }
+    ],
+    "keybindings": [
+      {
+        "command": "copyAiRef.copy",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus"
       }
     ],
+    "menus": {
+      "editor/context": [
+        { "command": "copyAiRef.copy", "when": "resourceScheme == file", "group": "9_cutcopypaste@20" },
+        { "command": "copyAiRef.copyAbsolute", "when": "resourceScheme == file", "group": "9_cutcopypaste@22" }
+      ],
+      "explorer/context": [
+        { "command": "copyAiRef.copyFiles", "when": "resourceScheme == file && !explorerResourceIsFolder", "group": "6_copypath@20" },
+        { "command": "copyAiRef.copyFilesAbsolute", "when": "resourceScheme == file && !explorerResourceIsFolder", "group": "6_copypath@22" }
+      ],
+      "commandPalette": [
+        { "command": "copyAiRef.copyFiles", "when": "false" },
+        { "command": "copyAiRef.copyFilesAbsolute", "when": "false" }
+      ]
+    },
     "configuration": {
       "title": "Copy AI Ref",
       "properties": {
+        "copyAiRef.pathMode": {
+          "type": "string",
+          "enum": ["relative", "absolute"],
+          "default": "relative",
+          "markdownDescription": "Default path style for editor and Explorer references. Relative paths fall back to absolute outside the workspace.",
+          "markdownEnumDescriptions": [
+            "Example: `src/app.js#13-19`",
+            "Example: `C:/project/src/app.js#13-19`"
+          ]
+        },
         "copyAiRef.prefixAt": {
-          "type": "boolean",
-          "default": false,
-          "description": "Prepend '@' to the copied reference."
+          "type": "string",
+          "enum": ["none", "@"],
+          "default": "none",
+          "markdownDescription": "Prefix prepended to the copied reference.",
+          "markdownEnumDescriptions": [
+            "Example: `src/app.js#13-19`",
+            "Example: `@src/app.js#13-19`"
+          ]
         },
         "copyAiRef.pathSeparator": {
           "type": "string",
           "enum": ["system", "slash", "backslash"],
           "default": "slash",
-          "description": "Path separator style used in the copied path."
+          "markdownDescription": "Path separator style used in the copied path.",
+          "markdownEnumDescriptions": [
+            "Whatever the platform uses. Example: `src\\app.js#13-19` on Windows, `src/app.js#13-19` elsewhere",
+            "Example: `src/app.js#13-19`",
+            "Example: `src\\app.js#13-19`"
+          ]
         },
         "copyAiRef.lineSeparator": {
           "type": "string",
           "enum": ["#", ":"],
           "default": "#",
-          "description": "Separator between the path and the line number(s)."
+          "markdownDescription": "Separator between the path and the line number(s).",
+          "markdownEnumDescriptions": [
+            "Example: `src/app.js#13-19`",
+            "Example: `src/app.js:13-19`"
+          ]
         },
         "copyAiRef.rangeConnector": {
           "type": "string",
           "enum": ["dash", "tilde"],
           "default": "dash",
-          "description": "Connector between start and end line for multi-line selections ('dash' -> '-', 'tilde' -> '~')."
+          "markdownDescription": "Connector between start and end line for multi-line selections.",
+          "markdownEnumDescriptions": [
+            "Example: `src/app.js#13-19`",
+            "Example: `src/app.js#13~19`"
+          ]
         }
       }
     }

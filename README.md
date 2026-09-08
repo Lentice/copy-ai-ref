@@ -57,13 +57,5 @@ existing keybindings:
 
 ## Install
 
-Not published to the Marketplace — install from source:
-
-```
-git clone https://github.com/Lentice/copy-ai-ref.git
-cd copy-ai-ref
-npx @vscode/vsce package
-code --install-extension copy-ai-ref-<version>.vsix
-```
-
-Re-run these steps after pulling updates to pick up changes.
+Install **Copy AI Ref** from the VS Code Marketplace, or search for
+`Copy AI Ref` in the Extensions view.

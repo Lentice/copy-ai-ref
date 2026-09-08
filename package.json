@@ -1,10 +1,9 @@
 {
-  "name": "copy-ai-ref",
+  "name": "copy-ai-ref-lentice",
   "displayName": "Copy AI Ref",
   "description": "Copy the current selection as an AI-assistant-friendly @path#line reference",
-  "version": "0.0.3",
-  "publisher": "local",
-  "private": true,
+  "version": "0.0.5",
+  "publisher": "lentice",
   "repository": {
     "type": "git",
     "url": "https://github.com/Lentice/copy-ai-ref.git"
@@ -14,7 +13,7 @@
   },
   "categories": ["Other"],
   "activationEvents": [
-    "onCommand:copyAiRef.copy"
+    "onStartupFinished"
   ],
   "main": "./extension.js",
   "contributes": {

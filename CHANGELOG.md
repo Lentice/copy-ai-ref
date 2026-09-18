@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Activate on startup so the first copy no longer waits on extension loading.
+
 ## 0.1.0
 
 - Add **Copy AI Ref (Absolute Path)** for a one-off absolute reference.
